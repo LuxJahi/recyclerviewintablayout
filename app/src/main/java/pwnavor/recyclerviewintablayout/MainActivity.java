@@ -40,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
             tab.setCustomView(pagerAdapter.getTabView(i));
         }
 
+
+
     }
 
 

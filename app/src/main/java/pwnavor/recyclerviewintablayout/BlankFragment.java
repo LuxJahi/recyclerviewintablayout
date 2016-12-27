@@ -1,5 +1,7 @@
 package pwnavor.recyclerviewintablayout;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,9 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-;
+import java.util.ArrayList;
+
 
 public class BlankFragment extends Fragment {
+    ArrayList<FeedItem>feedItems;
+    ArrayList<String>titles;
 
 
 
@@ -24,6 +29,7 @@ public class BlankFragment extends Fragment {
 
     }
 
+    @TargetApi(Build.VERSION_CODES.N)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -32,16 +38,35 @@ public class BlankFragment extends Fragment {
 
         RecyclerView rv = (RecyclerView) rootView.findViewById(R.id.rv_recycler_view);
         rv.setHasFixedSize(true);
+        BlankFragment context = this;
 
 
-        ReadRss readRss = new ReadRss(this, rv);
-        readRss.getClass();
+        ReadRss readRss = new ReadRss(context, rv);
+        readRss.execute();
+
+
+
+        titles = readRss.ProcessXml(readRss.Getdata());
+
+
+        String[] display_titles = (String[]) titles.toArray();
+
+
+
+
+
+
+
+
+
+
 
         //Document data = readRss.Getdata();
         //ArrayList<FeedItem> feedItems = readRss.ProcessXml(data);
 
 
-        MyAdapter adapter = new MyAdapter(new String[]{"test one", "test two", "test three", "test four", "test five" , "test six" , "test seven"});
+
+        MyAdapter adapter = new MyAdapter(display_titles);
         rv.setAdapter(adapter);
 
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
@@ -49,5 +74,6 @@ public class BlankFragment extends Fragment {
 
         return rootView;
     }
+
 
 }

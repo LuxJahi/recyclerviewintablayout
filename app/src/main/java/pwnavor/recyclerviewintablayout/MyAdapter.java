@@ -7,11 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
-
-
-
     private String[] mDataset;
 
     // Provide a reference to the views for each data item
@@ -54,10 +50,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public int getItemCount() {
         return mDataset.length;
     }
-
-
-
-
 
 
 

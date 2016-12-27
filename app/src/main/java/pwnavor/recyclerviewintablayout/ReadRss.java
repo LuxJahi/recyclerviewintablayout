@@ -1,7 +1,5 @@
 package pwnavor.recyclerviewintablayout;
 
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -24,29 +22,33 @@ import javax.xml.parsers.DocumentBuilderFactory;
  */
 
 public class ReadRss extends AsyncTask<Void, Void, Void> {
-    Context context;
+
+
+    BlankFragment context;
     String address="https://www.sciencemag.org/rss/news_current.xml";
-    ProgressDialog progressDialog;
+    //ProgressDialog progressDialog;
     ArrayList<FeedItem> feedItems;
     RecyclerView recyclerView;
     URL url;
     public ReadRss(BlankFragment context, RecyclerView recyclerView){
         this.recyclerView=recyclerView;
         this.context=context;
-        progressDialog = new ProgressDialog(context);
-        progressDialog.setMessage("Loading...");
+       // progressDialog = new ProgressDialog(context);
+       // progressDialog.setMessage("Loading...");
     }
 
     @Override
     protected void onPreExecute() {
-        progressDialog.show();
+        //progressDialog.show();
         super.onPreExecute();
     }
+
+
 
     @Override
     public void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-        progressDialog.dismiss();
+        //progressDialog.dismiss();
 
 
     }
@@ -57,8 +59,11 @@ public class ReadRss extends AsyncTask<Void, Void, Void> {
         return null;
     }
 
-    public ArrayList<FeedItem> ProcessXml(Document data) {
+
+    public ArrayList<String> ProcessXml(Document data) {
+        ArrayList<String>titles = null;
         if (data!=null) {
+            titles=new ArrayList<>();
             feedItems=new ArrayList<>();
             Element root=data.getDocumentElement();
             Node channel=root.getChildNodes().item(1);
@@ -72,6 +77,7 @@ public class ReadRss extends AsyncTask<Void, Void, Void> {
                         Node current=itemchilds.item(j);
                         if (current.getNodeName().equalsIgnoreCase("title")){
                             item.setTitle(current.getTextContent());
+                            titles.add(current.getTextContent());
                         }else if (current.getNodeName().equalsIgnoreCase("description")){
                             item.setDescription(current.getTextContent());
                         }else if (current.getNodeName().equalsIgnoreCase("pubDate")){
@@ -85,12 +91,17 @@ public class ReadRss extends AsyncTask<Void, Void, Void> {
 
                     }
                     feedItems.add(item);
-                    Log.d("itemThumnailUrl",item.getThumbnailUrl());
+                    Log.d("hello", item.getTitle());
+
+
                 }
 
             }
         }
-        return null;
+        Log.d("titles", String.valueOf(titles));
+        return titles;
+
+
     }
 
     public Document Getdata(){
@@ -106,8 +117,10 @@ public class ReadRss extends AsyncTask<Void, Void, Void> {
         } catch (Exception e){
             e.printStackTrace();
         }
+
         return null;
     }
+
 
 
 }
